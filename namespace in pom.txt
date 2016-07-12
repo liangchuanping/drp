@@ -1,0 +1,7 @@
+xmlns:是XML NameSpace的缩写，因为XML文件的标签名称都是自定义的，自己写的和其他人定义的标签很有可能会重复命名，
+而功能却不一样，所以需要加上一个namespace来区分这个xml文件和其他的xml文件，类似于java中的package。
+1、xmlns="http://maven.apache.org/POM/4.0.0" 这表示默认命名空间。
+2、xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 这个命名空间里面的元素或者属性就必须要以xsi:这种方式来写。
+3、schemaLocation就是他的一个属性，所以写成xsi:schemaLocation，表示把定义这个命名空间的schema文件给引用进来，
+   xsi:schemaLocation用于声明了目标名称空间的模式文档。
+
