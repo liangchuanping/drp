@@ -14,7 +14,10 @@ Ext.define("drp.app.model.projects.inventories.CurrentInventoryModel", {
     }, {
         name : "outcount",
         type : 'int'
-    }, {
+    },{
+    	name : "checkcount",
+    	type : 'int'
+    },{
         name : "restcount",
         type : 'int'
     }, {

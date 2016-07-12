@@ -49,6 +49,11 @@ Ext.define('drp.app.view.projects.inventories.CurrentInventoryView', {
                     text : '当前剩余量'
                 }, {
                     xtype : 'gridcolumn',
+                    dataIndex : 'checkcount',
+                    flex : 1,
+                    text : '盘点量'
+                },{
+                    xtype : 'gridcolumn',
                     dataIndex : 'income',
                     flex : 1,
                     text : '收入'
@@ -83,23 +88,6 @@ Ext.define('drp.app.view.projects.inventories.CurrentInventoryView', {
                         }
                     }
                 },
-                dockedItems : [{
-                    xtype : 'pagingtoolbar',
-                    dock : 'bottom',
-                    store : 'drp.app.store.projects.inventories.CurrentInventoryStore',
-                    displayInfo : true
-                }, {
-                    xtype: 'toolbar',
-                    dock: 'top',
-                    items: ['->', {
-                        xtype: 'button',
-                        icon : 'resources/images/icons/download.gif',
-                        margin : '1 5 1 0',
-                        itemId : 'exportCurrentInventoryExcel_btn',
-                        action : 'exportCurrentInventoryExcel',
-                        text: '导出excel'
-                    }]
-                }]
             }]
         });
 
