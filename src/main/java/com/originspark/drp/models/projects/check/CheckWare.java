@@ -46,4 +46,5 @@ public class CheckWare extends AbstractModel{
 	public void setWeight(String weight){
 		this.weight = weight;
 	}
+
 }
