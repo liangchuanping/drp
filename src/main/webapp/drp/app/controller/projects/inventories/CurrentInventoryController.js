@@ -8,8 +8,10 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     checkWareGrid :null,
     wareWin : null,
     currentInventoryStore : null,
+    checkGrid : null,
     grid :  null,
     gridStore : null,
+    
     
     init : function() {
     	currentInventoryController = this;
@@ -26,7 +28,8 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
             	     checkStockView = panel.up("checkstockview");
             	     checkStockDetailView = false;
             	     wareWin = false; 
-            	     panel.down('gridpanel').getStore().load();
+            	     checkGrid = panel.down('gridpanel');
+            	     checkGrid.getStore().load();
             	     gridStore = Ext.create("drp.app.store.projects.inventories.CurrentInventoryStore");
                      gridStore.load(); 
             	}
@@ -133,16 +136,16 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
           	if(form.isValid()){
           		var formBean = form.getValues();
           		var model = Ext.create(modelName,formBean);
-          		console.log("1");
+
           		model.save({
           			success: function(response, operation){
-          				checkgrid.getStore().load();
+//          			checkGrid.getStore().load();
           				var reader = operation.request.scope.reader;
           				
           				currentCheckInvoice = Ext.create(modelName,{
-          				id : reader.jsonData["object"]});
+          				id : reader.jsonData["object"]});          			          				
           				
-          				btn.up("form").down('id_checkheader').setValue(reader.jsonData["object"]);
+          				btn.up("form").down('#id_checkheader').setValue( reader.jsonData["object"]);
           				
           				btn.up('checkstockview').down('#addCheckWare_btn').setDisabled(false);
           				btn.up("checkstockview").down('#check_checkheader_tf').setReadOnly(true);
@@ -155,14 +158,6 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
           				Ext.Msg.alert("成功",reader.jsonData["message"]);         
           			},
           			failure : function(response,  operation){
-          				btn.up('checkstockview').down('#addCheckWare_btn').setDisabled(false);
-          				btn.up("checkstockview").down('#check_checkheader_tf').setReadOnly(true);
-          				btn.up("checkstockview").down('#forDate_checkheader_df').setReadOnly(true);
-          				btn.up("checkstockview").down('#code_checkheader_tf').setReadOnly(true);
-          				btn.up("checkstockview").down('#Manager_checkheader_cb').setReadOnly(true);
-          				btn.up("checkstockview").down('#WareKeeper_checkheader_cb').setReadOnly(true);
-          				btn.up("checkstockview").down('#Regulator_checkheader_cb').setReadOnly(true);
-          				btn.hide();
           				Ext.Msg.alert("失败！");
           			}
           		});
@@ -194,17 +189,19 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     	   var modelName = "drp.app.model.projects.check.CheckWareModel";
     	   var form = btn.up("form").getForm();
     	   if(form.isValid()){
-    	   var formBean = Form.getValues();
-    	   var model = Ext.create(modelName, formbean);
+    	   var formBean = form.getValues();
+    	   var model = Ext.create(modelName, formBean);
     	   if(formBean.id){
     		   model.set("ware", null);
     		   model.set("checkInvoice", null);
     	   }else{
     		   model.set("ware",{
-    		   id : formBean["wareId"]    	}); 
-                model.set("checkInvoice",{
+    		   id : formBean["wareId"] }); 
+    		   
+               model.set("checkInvoice",{
                id : currentCheckInvoice.data.id });                
     	   }
+    	   
     	   model.set("difference",formBean["checkAmount"] - formBean["wareAmount"]); 
     	   model.save({
     		   success : function(response, operation){
@@ -214,10 +211,10 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     				   property : "checkInvoice",
     				   value : currentCheckInvoice.data.id,
     			   }]);
-    			   Ext.Msg.alert("成功!", operation.request.scope.reader.jsonData["message"]);
+    			   Ext.Msg.alert("成功!");
     		   },  
     		   failure : function(response, operation) {
-                   Ext.Msg.alert("失败!", operation.request.scope.reader.jsonData["message"]);
+                   Ext.Msg.alert("失败!");
                } 
     	   });   	   
     	   };    	   

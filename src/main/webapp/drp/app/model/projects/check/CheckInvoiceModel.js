@@ -11,7 +11,7 @@ Ext.define("drp.app.model.projects.check.CheckInvoiceModel", {
     }, {
         name : 'regulator'
     }, {
-        name : "check"
+        name : "checkHeader"
     } ],
     proxy : {
         type : 'rest',

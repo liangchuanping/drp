@@ -23,16 +23,14 @@ import com.originspark.drp.util.json.JsonUtils;
 @RequestMapping("invoices/in")
 public class StockInInvoiceController extends AbstractInvoiceController {
 
-    private Logger logger = Logger.getLogger(StockInInvoiceController.class);
-
     @RequestMapping(method = RequestMethod.POST)
     @ResponseBody
     public String create(@RequestBody StockInInvoice invoice) {
 
         invoice.setCreatedBy(getCurrentUser().getName());
         StockInInvoice savedInvoice = stockInInvoiceService.save(invoice);
-
         return ok("信息确认成功", savedInvoice.getId());
+        
     }
 
     @RequestMapping(value = "/{id}", method = RequestMethod.PUT)

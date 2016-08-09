@@ -27,7 +27,7 @@ public class CheckWareController extends BaseController{
 	@Autowired
 	private CheckWareService service;
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping( method = RequestMethod.POST)
 	@ResponseBody
 	public String create(@RequestBody CheckWare checkWare){
 		

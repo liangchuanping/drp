@@ -15,6 +15,7 @@ import javax.persistence.TemporalType;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.originspark.drp.models.AbstractModel;
+import com.originspark.drp.models.projects.check.CheckWare;
 import com.originspark.drp.models.projects.costs.StockInCost;
 import com.originspark.drp.models.projects.costs.StockOutCost;
 import com.originspark.drp.models.projects.inventories.MonthendInventory;
@@ -78,7 +79,11 @@ public class Ware extends AbstractModel {
     @JsonIgnore
     @OneToMany(mappedBy="ware")
     private List<StockOutCost> outCosts;
-
+    
+    @JsonIgnore
+    @OneToMany(mappedBy = "ware")
+    private List<CheckWare> checkWare;
+    
     @JsonIgnore
     @OneToMany(mappedBy="ware")
     private List<MonthendInventory> inventories;

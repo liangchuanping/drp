@@ -1,18 +1,20 @@
 Ext.define("drp.app.model.projects.check.CheckWareModel", {
     extend : "drp.app.model.AbstractModel",    
-    fields : [{
-        name : "ware"
+    fields : [
+       {name : "invoice"
+    },
+       {name : "ware"
     }, {
         name : "wareAmount"
-    }, {
-        name : 'checkInvoice'
     }, {
         name : "checkAmount"
     }, {
         name : 'difference'
     }, {
-        name : 'weight'
-    }, ],
+    	name : 'forDate'    	
+    }
+    
+    ],
     proxy : {
         type : 'rest',
         url : 'checkware/in',
