@@ -7,25 +7,27 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+
 import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.originspark.drp.models.projects.check.CheckWare;
 
-
 @Entity
 @Table(name = "invoice_check")
 public class CheckInvoice extends AbstractModel{
-     
+    
+	
 	@JsonIgnore
 	@OneToMany(mappedBy = "invoice")
 	private List<CheckWare> wareCheck;
 	
-	private String check;
-	
 	@Temporal(TemporalType.DATE)
-	private Date forData;
+	
+	private Date forDate;
 	
 	private String code;
+	
+	private String checkHeader;
 	
 	private String manager;
 	
@@ -33,6 +35,10 @@ public class CheckInvoice extends AbstractModel{
 	
 	private String regulator;
 	
+	public static enum COLUMNS{
+		 STARTDATE,ENDDATE,WARENAME,
+	     REGULATORNAME,WAREKEEPERNAME,MANAGERNAME
+	}	
 	
 	public List<CheckWare>  getWareCheck(){
 		return wareCheck;
@@ -66,14 +72,6 @@ public class CheckInvoice extends AbstractModel{
 		this.code = code;
 	}
 
-	public String getCheck() {
-		return check;
-	}
-
-	public void setCheck(String check) {
-		this.check = check;
-	}
-
 	public String getRegulator() {
 		return regulator;
 	}
@@ -82,6 +80,20 @@ public class CheckInvoice extends AbstractModel{
 		this.regulator = regulator;
 	}
 	
-		
+    public Date getForDate() {
+        return forDate;
+    }
+
+    public void setForDate(Date forDate) {
+        this.forDate = forDate;
+    }
+
+	public String getCheckHeader() {
+		return checkHeader;
+	}
+
+	public void setCheckHeader(String checkHeader) {
+		this.checkHeader = checkHeader;
+	}	
 	
 }

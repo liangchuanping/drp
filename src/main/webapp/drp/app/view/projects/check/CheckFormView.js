@@ -38,7 +38,7 @@ Ext.define('drp.app.view.projects.check.CheckFormView', {
                             fieldLabel: '盘点<font color="red">*</font>',
                             itemId : 'check_checkheader_tf',
                             allowBlank: false,
-                            name : 'check',
+                            name : 'checkHeader',
                             margin : '5 0 0 15',
                             width : 200,
                             labelWidth: 60

@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.originspark.drp.models.User;
+import com.originspark.drp.service.projects.check.CheckInvoiceService;
+import com.originspark.drp.service.projects.check.CheckWareService;
 import com.originspark.drp.service.projects.inventories.InventoryService;
 import com.originspark.drp.service.projects.invoices.StockInInvoiceService;
 import com.originspark.drp.service.projects.invoices.StockOutInvoiceService;
@@ -28,7 +30,7 @@ public class BaseController extends HandlerInterceptorAdapter {
 
     @Autowired
     protected WareService wareService;
-
+    
     @Autowired
     protected WareCategoryService wareCategoryService;
 
@@ -43,7 +45,10 @@ public class BaseController extends HandlerInterceptorAdapter {
 
     @Autowired
     protected InventoryService inventoryService;
-
+    
+    @Autowired
+    protected CheckInvoiceService checkInvoiceService;
+    
     private static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<HttpServletRequest>();
 
     private static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<HttpServletResponse>();
