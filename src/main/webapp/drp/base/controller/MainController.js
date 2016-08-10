@@ -35,6 +35,10 @@ Ext.define("drp.base.controller.MainController", {
             itemViewXtype = "monthendinventoryview";
             itemViewController = "drp.app.controller.projects.inventories.MonthendInventoryController";
             itemViewName = "drp.app.view.projects.inventories.MonthendInventoryView";
+        }else if(record.data["id"] == "check_stock_inventory"){
+            itemViewXtype = "checkinvoiceview";
+            itemViewController = "drp.app.controller.projects.inventories.CurrentInventoryController";
+            itemViewName = "drp.app.view.projects.check.CheckInvoiceView";
         }
         //==========================出入库管理=======================================
         else if(record.data["id"] == "menu_stockin"){//入库单

@@ -17,7 +17,8 @@ public class CurrentInventoryUI {
     private Long outcount;// 出库量
     private BigDecimal income;// 收入
     private BigDecimal outcome;// 支出
-
+    private BigDecimal check;
+    
     public String getName() {
         return name;
     }
@@ -27,6 +28,12 @@ public class CurrentInventoryUI {
     public String getBrand() {
         return brand;
     }
+    public void setCheck(BigDecimal check){
+    	this.check = check;
+    }
+    public BigDecimal getCheck(){
+    	return  check;
+    }    
     public void setBrand(String brand) {
         this.brand = brand;
     }

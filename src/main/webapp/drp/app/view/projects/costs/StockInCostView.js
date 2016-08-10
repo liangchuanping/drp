@@ -87,6 +87,7 @@ Ext.define('drp.app.view.projects.resources.StockInCostView', {
                             valueField : 'name',
                             displayField : 'name',
                             allowBlank: false,
+                            itemId : 'Manager_stockInInvoice_cb',
                             store : 'drp.app.store.users.ManagerStore',
                             fieldLabel : '负责人<font color="red">*</font>'
                         }, { 
@@ -98,6 +99,7 @@ Ext.define('drp.app.view.projects.resources.StockInCostView', {
                             valueField : 'name',
                             displayField : 'name',
                             allowBlank: false,
+                            itemId : 'WareKeeper_stockInInvoice_cb',
                             store : 'drp.app.store.users.WareKeeperStore',
                             fieldLabel : '库管员<font color="red">*</font>'
                         }, {
@@ -108,6 +110,7 @@ Ext.define('drp.app.view.projects.resources.StockInCostView', {
                             name : 'regulator',
                             valueField : 'name',
                             displayField : 'name',
+                            itemId : 'Regulator_stockInInvoice_cb',
                             store : 'drp.app.store.users.RegulatorStore',
                             fieldLabel : '经手人'
                         }, {
@@ -119,7 +122,8 @@ Ext.define('drp.app.view.projects.resources.StockInCostView', {
                         }]
                     }]
                 }]
-            }, {//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<入库单-商品列表
+            }, 
+            {//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<入库单-商品列表
                 xtype : 'gridpanel',
                 region : 'center',
                 height : 260,
@@ -168,16 +172,7 @@ Ext.define('drp.app.view.projects.resources.StockInCostView', {
                         icon : 'resources/images/icons/add.png',
                         action : 'addStockInCost',
                         itemId : 'addStockInCost_btn',
-                        text : '新增',
-                        listeners : {
-                            click : function() {
-                                inCostForm.getForm().reset();
-                                inCostForm.down('#chooseWare_stockInCost_btn').setDisabled(false);
-                                inCostForm.down('#wareUnitPrice_stockInCost_nf').setReadOnly(false);
-                                inCostForm.down('#wareQuantity_stockInCost_nf').setReadOnly(false);
-                                inCostForm.down('#wareUnitPrice_stockInCost_nf').setValue(0);
-                            }
-                        }
+                        text : '新增',                      
                     }, '-', {
                         xtype : 'button',
                         icon : 'resources/images/icons/delete.png',
@@ -239,10 +234,10 @@ Ext.define('drp.app.view.projects.resources.StockInCostView', {
                         xtype : 'fieldcontainer',
                         layout : 'column',
                         items : [{
-                            xtype : 'textfield',//入库单的id
+                            xtype : 'textfield',
                             hidden : true,
                             name : 'id',
-                            itemId : 'id_stockInCost_tf'
+                            itemId : 'id_stockInCost_tf'//入库单的id
                         }, {
                             xtype : 'textfield',
                             margin : '15 0 0 10',

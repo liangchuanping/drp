@@ -44,7 +44,7 @@ Ext.define("drp.app.controller.AbstractController", {
         var records = grid.getSelectionModel().getSelection();
         var ids = [];
         for(var i = 0,len = records.length;i<len;i++){
-            ids[i] = records[i].data.id;
+            ids[i] = records[i].getId();
         }
         
         var data = new Object({

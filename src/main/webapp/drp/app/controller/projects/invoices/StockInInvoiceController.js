@@ -56,7 +56,7 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
                 },
                 beforehide : this.updateInvoiceTotalPrice
             },
-
+            
             //确认单据头信息
             'stockincostview button[action=confirmInvoiceHeader]' : {
                 click : this.confirmInvoiceHeader
@@ -66,7 +66,13 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
             'stockincostview button[action=saveStockInCost]' : {
                 click : this.saveStockInCost
             },
-
+            
+            //stock_in_cost add
+            'stockincostview button[action=addStockInCost]' : {
+                click : this.addStockInCost
+            },
+            
+            
             //stock_in_cost delete
             'stockincostview button[action=deleteStockInCost]' : {
                 click : this.deleteStockInCost
@@ -156,7 +162,19 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
             value : form.down("#managerName_filter").getValue()
         } ]);
     },
-
+     
+    
+    // add 
+    addStockInCost : function(btn){
+    	btn.up('stockincostview').down('#stockInCost_form').getForm().reset();
+    	btn.up('stockincostview').down('#stockInCost_form').down('#chooseWare_stockInCost_btn').setDisabled(false);
+    	btn.up('stockincostview').down('#stockInCost_form').down('#wareQuantity_stockInCost_nf').setReadOnly(false);
+    	btn.up('stockincostview').down('#stockInCost_form').down('#wareUnitPrice_stockInCost_nf').setReadOnly(false);
+    	btn.up('stockincostview').down('#stockInCost_form').down('#wareUnitPrice_stockInCost_nf').setValue(0);  	
+    },
+    
+    
+    
     //入库商品-删除
     deleteStockInCost : function(btn) {
         inInvoiceController.deleteModel(btn, inCostGrid, "商品条目");
@@ -229,8 +247,11 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
 
     //入库单-新增
     showCreateInInvoiceForm : function() {
-        if(!inInvoiceCostWin){
+        if(!inInvoiceCostWin){        	
             inInvoiceCostWin = Ext.widget('stockincostview');
+        }else{
+        	Ext.destroy(inInvoiceCostWin);
+        	 inInvoiceCostWin = Ext.widget('stockincostview');
         }
         var store = inInvoiceCostWin.down("gridpanel").getStore();
         //在弹出新建入库单的页面之前，需要做三部分工作：清空store、合价设置为0
@@ -238,9 +259,12 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
         store.removeAll(false);
         inInvoiceCostWin.down('#addStockInCost_btn').setDisabled(true);
         inInvoiceCostWin.down('#totalPrice_stockInCost_df').setValue(0);
-        inInvoiceCostWin.down('#header_stockInCost_form').getForm().reset();
-        inInvoiceCostWin.down('#stockInCost_form').getForm().reset();
+//        inInvoiceCostWin.down('#header_stockInCost_form').getForm().reset();
+//        inInvoiceCostWin.down('#stockInCost_form').getForm().reset();
 
+        
+        
+        
         inInvoiceCostWin.setTitle("新增入库单");
         inInvoiceCostWin.show();
     },
@@ -290,7 +314,7 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
 
     //入库单-删除
     deleteInInvoice : function(btn) {
-        inInvoiceController.deleteBatchModel(btn, inInvoiceGrid, "入库单", "/invoices/in/deleteBatch");
+        inInvoiceController.deleteBatchModel(btn, inInvoiceGrid, "入库单", "invoices/in/deleteBatch");
     },
 
     //入库单-更新总价
@@ -319,7 +343,15 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
     },
 
     confirmInvoiceHeader : function(btn){
-        var modelName = "drp.app.model.projects.invoices.StockInInvoiceModel";
+        Ext.MessageBox.confirm("标题","确定单据头后，将无法再修改",function(choose){
+        	if(choose == 'yes'){
+        		inInvoiceController.confirInvoiceHeanderYes(btn);
+        	}
+        });
+        },
+        
+    confirInvoiceHeanderYes : function(btn){     
+     var modelName = "drp.app.model.projects.invoices.StockInInvoiceModel";
         var form = btn.up("form").getForm();
         if (form.isValid()) {
             var formBean = form.getValues();
@@ -332,7 +364,16 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
                         id : reader.jsonData["object"]
                     });
                     btn.up("form").down('#id_stockInInvoice').setValue(reader.jsonData["object"]);
-                    btn.up("stockincostview").down('#addStockInCost_btn').setDisabled(false);
+                    btn.up("stockincostview").down('#addStockInCost_btn').setDisabled(false);                   
+                    
+                    btn.up("stockincostview").down('#receiveMan_stockInInvoice_tf').setReadOnly(true);   
+                    btn.up("stockincostview").down('#forDate_stockInInvoice_df').setReadOnly(true);
+                    btn.up("stockincostview").down('#code_stockInInvoice_tf').setReadOnly(true);
+                    btn.up("stockincostview").down('#Manager_stockInInvoice_cb').setReadOnly(true);
+                    btn.up("stockincostview").down('#WareKeeper_stockInInvoice_cb').setReadOnly(true);
+                    btn.up("stockincostview").down('#Regulator_stockInInvoice_cb').setReadOnly(true);
+                    btn.hide();
+                    
                     Ext.Msg.alert("成功!", reader.jsonData["message"]);
                 },
                 failure : function(response, operation) {
