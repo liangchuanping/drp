@@ -107,7 +107,10 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
                                 			wareCount = gridStore.getAt(i).data.restcount; 
                                 		}
                                 	};
+                                	
+                                	
                                     var checkWareForm = checkStockView.down('#checkWare_form');
+                                    checkWareForm.down('#wareId_checkWare_tf').setValue(record.data.id);
                                     checkWareForm.down('#wareName_checkWare_tf').setValue(record.data.name);
                                     checkWareForm.down('#wareAmount_checkWare_tf').setValue(wareCount);                                   
                                  //   checkWareForm.down('#wareUnit_stockInCost_tf').setValue(record.data.unit);

@@ -22,7 +22,7 @@ Ext.define('drp.app.view.projects.check.CheckFormView', {
         });
         
         Ext.applyIf(me, {
-            items : [{//<<<<<<<<<<<<<<<<<<<<入库单-抬头字段
+            items : [{
                 xtype : 'panel',
                 region : 'north',
                 layout : 'fit',
