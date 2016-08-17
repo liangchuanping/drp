@@ -6,16 +6,18 @@ Ext.define("drp.app.model.projects.check.CheckWareModel", {
     },
        {
     	name : "ware"
-    }, 
-      {
-    	name : 'forDate'    	
-    },{
+    }, {
         name : "wareAmount"
     }, {
         name : "checkAmount"
     }, {
         name : 'difference'
-    },    
+    },{
+    	name:  'weight'
+    },{
+        name : "ware.name",
+        persist : false
+    }    
     ],
     
     proxy : {

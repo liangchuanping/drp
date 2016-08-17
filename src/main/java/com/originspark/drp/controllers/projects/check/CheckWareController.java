@@ -55,7 +55,7 @@ public class CheckWareController extends BaseController{
     	  return failure("抱歉。不能重复添加商品");
       }
       
-      checkWare.setForDate(invoice.getForDate());
+    //  checkWare.setForDate(invoice.getForDate());
       checkWare.setCreatedOn(new Date());
       checkWare.setCreatedBy(getCurrentUser().getName());
       checkWare.setUpdatedOn(new Date());

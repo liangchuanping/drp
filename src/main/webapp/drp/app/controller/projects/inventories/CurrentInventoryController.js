@@ -1,5 +1,5 @@
 Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController', {
-    extend : 'Ext.app.Controller',
+    extend : "drp.app.controller.AbstractController",
 
     currentInventoryController : null,
     checkStockView : null,
@@ -8,10 +8,11 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     checkWareGrid :null,
     wareWin : null,
     currentInventoryStore : null,
-    checkGrid : null,
+    checkInvoiceGrid : null,
     grid :  null,
     gridStore : null,
-    
+    checkWareStore : null,
+    checkInvoiceStore : null,
     
     init : function() {
     	currentInventoryController = this;
@@ -25,11 +26,11 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
                         
             'checkinvoiceview' :{
             	afterrender : function(panel){
-            	     checkStockView = panel.up("checkstockview");
             	     checkStockDetailView = false;
             	     wareWin = false; 
-            	     checkGrid = panel.down('gridpanel');
-            	     checkGrid.getStore().load();
+            	     checkInvoiceGrid = panel.down('gridpanel');
+            	     checkInvoiceStore = checkInvoiceGrid.getStore();
+            	     checkInvoiceStore.load();
             	     gridStore = Ext.create("drp.app.store.projects.inventories.CurrentInventoryStore");
                      gridStore.load(); 
             	}
@@ -54,16 +55,28 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
             	}
             },
             
+            'checkinvoiceview button[action = deleteCheckInInvoice]' :{
+            	click: function(){
+            		this.deleteCheckInInvoice();
+            	}
+            },
             'checkstockview button[action = confirmCheckInvoiceHeader]' :{
             	click : function(btn){
             		this.comfirmCheckInvoiceHeader(btn);
             	}
             },
+            
             'checkstockview button[action = addWareCheck]' :{
             	click : function(btn){
             		this.addWareCheck(btn);
             	} 
             },
+            
+            'checkstockview button[action = deleteWareCheck]' :{
+            	click : function(btn){
+            		this.deleteWareCheck(btn);
+            	} 
+            }, 
             
             'checkstockview button[action = saveCheckStock]' :{
             	click : function(btn){
@@ -112,8 +125,9 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
                                     var checkWareForm = checkStockView.down('#checkWare_form');
                                     checkWareForm.down('#wareId_checkWare_tf').setValue(record.data.id);
                                     checkWareForm.down('#wareName_checkWare_tf').setValue(record.data.name);
-                                    checkWareForm.down('#wareAmount_checkWare_tf').setValue(wareCount);                                   
-                                 //   checkWareForm.down('#wareUnit_stockInCost_tf').setValue(record.data.unit);
+                                    checkWareForm.down('#wareAmount_checkWare_tf').setValue(wareCount); 
+                                    checkWareForm.down('#wareCheckMount_checkWare_tf').reset();
+                                    checkWareForm.down('#wareDifferent_checkWare_nf').reset();
                                 }
                             }
                         }]
@@ -135,7 +149,8 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
        
     confirmYES : function(btn){
           	var modelName = "drp.app.model.projects.check.CheckInvoiceModel";
-          	var form = btn.up("form").getForm();              
+          	var form = btn.up("form").getForm();
+          	gridStore.load();
           	if(form.isValid()){
           		var formBean = form.getValues();
           		var model = Ext.create(modelName,formBean);
@@ -144,7 +159,7 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
           			success: function(response, operation){
 //          			checkGrid.getStore().load();
           				var reader = operation.request.scope.reader;
-          				
+          				checkInvoiceStore.load();
           				currentCheckInvoice = Ext.create(modelName,{
           				id : reader.jsonData["object"]});          			          				
           				
@@ -174,20 +189,50 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     	   }else{
     		   Ext.destroy(checkStockView);
     		   checkStockView = Ext.widget('checkstockview');
-    	   }    	   
-    	   //var store = checkStockView.get("gridpanel").getStore();
-    	  // store.removeAll(false);
-           checkStockView.down("#checkWare_form").getForm().reset();
+    	   }  	   
+    	   checkWareStore = checkStockView.down("gridpanel").getStore();
+    	   checkWareStore.removeAll(false);
            checkStockView.setTitle("库存盘点");
     	   checkStockView.show();
        },
-    
+       
+       deleteCheckInInvoice: function(btn){
+    	   this.deleteBatchModel(btn,checkInvoiceGrid,"盘点单","checkinvoices/in/deleteBatch");   
+       },
+       
        addWareCheck: function(btn){
     	   btn.up('checkstockview').down('#checkWare_form').getForm().reset();
     	   btn.up('checkstockview').down('#chooseWare_checkWare_btn').setDisabled(false);
     	   btn.up('checkstockview').down('#wareCheckMount_checkWare_tf').setReadOnly(false);
        },
     
+       deleteWareCheck: function(btn){
+    	  var selectedmodels = checkwaregrid.getSelectionModel().getSelection();
+    	  
+    		  Ext.MessageBox.confirm("标题","你要删除这些商品吗？",function(btn){
+    			  if(btn = "yes"){
+    				  for(var a = 0; a < selectedmodels.length; a++){
+    					var  selectedmodel = selectedmodels[a];
+    				  selectedmodel.destroy({
+    					success : function(selectedmodel, operation){
+    						var store =checkwaregrid.getStore();
+    						var dataLength = store.data.length;
+    						if(dataLength>1){
+    							store.load();
+    						}else{
+    							store.loadPage(1);
+    						}    						
+    					},
+    					failure: function(selectedmodel, operation){
+    						Ext.Msg.alert("失败")
+    					}
+    			  });
+    			  }
+    			  }}
+    		  );
+    	  
+       },
+       
        saveCheckStock : function(btn){
     	   var modelName = "drp.app.model.projects.check.CheckWareModel";
     	   var form = btn.up("form").getForm();
@@ -196,22 +241,22 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     	   var model = Ext.create(modelName, formBean);
     	   if(formBean.id){
     		   model.set("ware", null);
-    		   model.set("checkInvoice", null);
+    		   model.set("invoice", null);
     	   }else{
     		   model.set("ware",{
     		   id : formBean["wareId"] }); 
     		   
-               model.set("checkInvoice",{
+               model.set("invoice",{
                id : currentCheckInvoice.data.id });                
     	   }
     	   
     	   model.set("difference",formBean["checkAmount"] - formBean["wareAmount"]); 
     	   model.save({
     		   success : function(response, operation){
-    			   var store = checkgrid.getStore();
+    			   var store = checkwaregrid.getStore();
     			   store.filters.clear();
-    			   store.filters([{
-    				   property : "checkInvoice",
+    			   store.filter([{
+    				   property : "invoice",
     				   value : currentCheckInvoice.data.id,
     			   }]);
     			   Ext.Msg.alert("成功!");
@@ -234,7 +279,8 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
               "drp.app.model.resources.WareModel",
               "drp.app.model.users.WareKeeperModel",
               "drp.app.model.resources.WareModel",
-              "drp.app.model.projects.check.CheckInvoiceModel"
+              "drp.app.model.projects.check.CheckInvoiceModel",
+              "drp.app.model.projects.check.CheckWareModel"
               ],
     
     stores : ['drp.app.store.projects.inventories.CurrentInventoryStore',
@@ -244,5 +290,6 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
               "drp.app.store.resources.VendorStore",
               "drp.app.store.resources.WareStore",
               "drp.app.store.resources.VendorStore",
-              "drp.app.store.projects.check.CheckInvoiceStore"]
+              "drp.app.store.projects.check.CheckInvoiceStore",
+              "drp.app.store.projects.check.CheckWareStore"]
 });

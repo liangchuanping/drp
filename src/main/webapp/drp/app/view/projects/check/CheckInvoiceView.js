@@ -122,7 +122,7 @@ Ext.define('drp.app.view.projects.check.CheckInvoiceView', {
                     dataIndex : 'code'
                 }, {
                     xtype : 'gridcolumn',
-                    dataIndex : 'receiveMan',
+                    dataIndex : 'checkHeader',
                     flex : 2,
                     text : '盘点'
                 },{

@@ -128,7 +128,7 @@ Ext.define('drp.app.view.projects.check.CheckFormView', {
                 autoScroll : true,
                 selModel : selModel,
                 columnLines : true,
-                store : "drp.app.store.projects.check.CheckInvoiceStore",
+                store : "drp.app.store.projects.check.CheckWareStore",
                 columns : [
                     Ext.create('Ext.grid.RowNumberer'),
                 {
@@ -138,12 +138,12 @@ Ext.define('drp.app.view.projects.check.CheckFormView', {
                     dataIndex : 'ware.name'
                 }, {
                     xtype : 'gridcolumn',
-                    dataIndex : 'ware.amount',
+                    dataIndex : 'wareAmount',
                     flex : 2,
                     text : '库存数'
                 }, {
                     xtype : 'gridcolumn',
-                    dataIndex : 'ware.check',
+                    dataIndex : 'checkAmount',
                     flex : 2,
                     text : '盘点数'
                 }, {
@@ -171,7 +171,7 @@ Ext.define('drp.app.view.projects.check.CheckFormView', {
                     }, '-', {                   	
                         xtype : 'button',
                         icon : 'resources/images/icons/delete.png',
-                        action : 'deleteStockCheck',
+                        action : 'deleteWareCheck',
                         itemId : 'deleteStockInCost_btn',
                         disabled : true,
                         text : '删除'

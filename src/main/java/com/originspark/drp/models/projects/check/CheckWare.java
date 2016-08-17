@@ -4,10 +4,10 @@ import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
-import javax.xml.crypto.Data;
 
 import java.text.DecimalFormat;
 import java.util.Date;
@@ -25,32 +25,42 @@ public class CheckWare extends AbstractModel{
 	
 	@ManyToOne
 	private Ware ware;
-	
-    @Temporal(TemporalType.DATE)
-    private Date forDate;
     
-	@Column(precision = 15, scale = 2, nullable = false)
-	private BigDecimal wareAmount = BigDecimal.ZERO;
+	private String wareAmount;
 	
 	@Column(precision = 15, scale = 2, nullable = false)
 	private BigDecimal checkAmount = BigDecimal.ZERO;
 	
-	@Column(precision = 15, scale = 2, nullable = false)
-	private BigDecimal difference = BigDecimal.ZERO;
+	private String difference;
 	
-	@JsonIgnore
-	@Column (nullable = false)
 	private String weight;
+	
+	
+	public String getDifference(){
+		return this.difference;
+	}
+	
+	public void setDifference(String difference){
+		this.difference = difference;
+	}
 	
 	public static enum COLUMNS{
 		INVOICE
 	}
 	
-	public CheckInvoice getCheckInvoice(){
+	public String getWareAmount(){
+		return wareAmount;
+	}
+	
+	public void setWareAmount(String wareAmount){
+		this.wareAmount = wareAmount;
+	}
+	
+	public CheckInvoice getInvoice(){
 		return invoice;
 	}
 	
-	public void setCheckInvoice(CheckInvoice invoice){
+	public void setInvoice(CheckInvoice invoice){
 		this.invoice = invoice;
 	}
 	
@@ -62,36 +72,30 @@ public class CheckWare extends AbstractModel{
 		this.ware = ware;
 	} 
 	
-	public CheckInvoice getInvoice(){
-		return invoice;
-	}
-	
-	public void setForDate(Date date){
-		this.forDate = date;
-	}
-	
-	public Date getForDate(){
-		return forDate;
-	}
-	
     public BigDecimal getCheckAmount(){
     	return checkAmount;
     }
     
 	 public void setCheckAmount(BigDecimal checkAmount){
+		 if(checkAmount == null){
+	            this.checkAmount = BigDecimal.ZERO;
+	        }
 	    	this.checkAmount = checkAmount;
 	 }
 	
 	public String getWeight(){
-		Double weight1 = difference.doubleValue()/wareAmount.doubleValue();
-		DecimalFormat decimalFormat = new DecimalFormat("###.00");  
-	    Double weight2 = weight1 * 100;
-	    String weight3 = decimalFormat.format(weight2);
-	    return weight3 + "%";
+		  	  return weight;
 	}
 	
 	public void setWeight(String weight){
-		this.weight = weight;
+		  if(!wareAmount.equals("0")){
+	      Double weight1 = Double.valueOf(difference)/Double.valueOf(wareAmount);
+		  DecimalFormat decimalFormat = new DecimalFormat("##0.00");  
+		  Double weight2 = weight1 * 100;
+		  this.weight = decimalFormat.format(weight2).toString()+"%";}
+		  else{
+			  this.weight =  "NA";
+		  }
 	}
-
+	
 }

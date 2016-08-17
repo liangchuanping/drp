@@ -64,8 +64,8 @@ public class CheckInvoiceServiceBean extends BaseDAOSupport<CheckInvoice> implem
 		Root<CheckInvoice> checkInvoice = countQuery.from(CheckInvoice.class);
 		countQuery.select(cb.count(checkInvoice));
 		CheckWare[] check = findByWareName(filters);
-		if(check.length == 0){
-			return null;
+		if(check == null){
+			return 0L;
 		}
 		
 		List<Predicate[]>  predicates = toPerdicate(cb, checkInvoice, filters, check);
@@ -161,7 +161,7 @@ public class CheckInvoiceServiceBean extends BaseDAOSupport<CheckInvoice> implem
 
 	@Override
 	public CheckInvoice findById(Long id) {
-		return em.find(CheckInvoice.class, "id");
+		return em.find(CheckInvoice.class, id);
 	}
     
     private CheckWare[] findByWareName(List<FilterRequest> filters){
