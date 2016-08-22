@@ -29,7 +29,7 @@ Ext.define('drp.app.view.projects.resources.StockInCostShowView', {
                         items : [{
                             xtype : 'displayfield',
                             margin : '5 0 0 15',
-                            labelWidth: 30,
+                            labelWidth: 40,
                             name : 'receiveMan',
                             width : 200,
                             fieldLabel : '收到'

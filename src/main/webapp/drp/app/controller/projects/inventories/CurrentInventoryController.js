@@ -5,8 +5,11 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     checkStockView : null,
     checkStockDetailView : null,
     currentCheckInvoice :null,
+    showCheckInvoice : null,
     checkWareGrid :null,
+    checkWareForm : null,
     wareWin : null,
+    inInvoiceDetailWin : null,
     currentInventoryStore : null,
     checkInvoiceGrid : null,
     grid :  null,
@@ -28,6 +31,8 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
             	afterrender : function(panel){
             	     checkStockDetailView = false;
             	     wareWin = false; 
+            	     checkStockView = false;
+            	     inInvoiceDetailWin = false;
             	     checkInvoiceGrid = panel.down('gridpanel');
             	     checkInvoiceStore = checkInvoiceGrid.getStore();
             	     checkInvoiceStore.load();
@@ -39,9 +44,14 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
             'checkstockview' : {
                 afterrender : function(panel) {                 	                	
                     checkwaregrid = panel.down('gridpanel');
-                    
+                    checkWareForm = panel.down("#checkWare_form");
+                                       
                 }
             },  
+            
+            'checkinvoiceview > gridpanel' :{
+            	itemdblclick : this.showUpdateInvoiceForm
+            },
             
             'currentinventoryview button[action=exportCurrentInventoryExcel]' : {
                 click : function(btn) {
@@ -84,6 +94,7 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
             	} 
             },
             
+            
             'checkstockview button[action = chooseWare]':{
             	click : function(btn){
             		if(!wareWin){
@@ -97,6 +108,7 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
             		wareWin.show();
             	} 
             },
+            
             
             'stockinwarewin gridpanel' : {
                 itemcontextmenu : function(view, record, item, index, e){
@@ -233,6 +245,32 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     	  
        },
        
+       showUpdateInvoiceForm : function(grid, record, item, index){
+    	   showCheckInvoice = record;
+    	   var invoiceData = record.data;
+    	   
+    	   
+    	   var checkWin = null;
+    	   if(!inInvoiceDetailWin){
+    		   inInvoiceDetailWin = Ext.widget('checkwareshowview');    		   
+    	   }
+    	   checkWin = inInvoiceDetailWin;
+    	   inInvoiceDetailWin.setTitle("查看盘点单");
+    	   
+    	   var store = checkWin.down("gridpanel").getStore();
+    	   store.filters.clear();
+    	   store.filter([
+    	   {property: "invoice" ,
+    		value: invoiceData.id,
+    	   }])
+    	   
+    	   checkWin.down("#checkinvoice_form").loadRecord(record);
+    	   checkWin.down("#managerName_df").setValue(record.data.manager);
+    	   checkWin.down("#wareKeeperName_df").setValue(record.data.wareKeeper);
+    	   checkWin.down("#regulatorName_df").setValue(record.data.regulator);
+    	   
+       },
+              
        saveCheckStock : function(btn){
     	   var modelName = "drp.app.model.projects.check.CheckWareModel";
     	   var form = btn.up("form").getForm();
@@ -259,10 +297,11 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     				   property : "invoice",
     				   value : currentCheckInvoice.data.id,
     			   }]);
-    			   Ext.Msg.alert("成功!");
+    			   checkWareForm.getForm().reset();
+    			   Ext.Msg.alert("成功!",operation.request.scope.reader.jsonData["message"]);
     		   },  
     		   failure : function(response, operation) {
-                   Ext.Msg.alert("失败!");
+                   Ext.Msg.alert("失败!",operation.request.scope.reader.jsonData["message"]);
                } 
     	   });   	   
     	   };    	   
