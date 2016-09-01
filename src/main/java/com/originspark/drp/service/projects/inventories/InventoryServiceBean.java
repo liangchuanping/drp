@@ -21,14 +21,30 @@ public class InventoryServiceBean extends BaseDAOSupport implements InventorySer
     // 实时入库量统计
     final String CURRENT_IN_SQL = "(SELECT DISTINCT(ware) as wid, sum(quantity) as incount, SUM(total) as outcome FROM cost_stock_in GROUP BY ware) as t1";
     // 实时出库量统计
-    final String CURRENT_OUT_SQL = "(SELECT DISTINCT(ware) as wid, sum(quantity) as outcount, SUM(total) as income FROM cost_stock_out GROUP BY ware) as t2";
+    final String CURRENT_OUT_SQL = "(SELECT DISTINCT(ware) as wid1, sum(quantity) as outcount, SUM(total) as income FROM cost_stock_out GROUP BY ware) as t2";
     // 实时库存量统计
-    final String CURRENT_SUM_SQL = "SELECT t3.name, t3.model, t3.unit, t3.brand, t1.outcome, t1.incount, t2.income, t2.outcount FROM "
-            + CURRENT_IN_SQL + " LEFT JOIN " + CURRENT_OUT_SQL + " ON t1.wid = t2.wid"
-            + " JOIN wares as t3 WHERE t1.wid = t3.id ORDER BY t2.income - t1.outcome DESC";
+    final String CURRENT_SUM_SQL = "SELECT  t5.name, t5.model, t5.unit, t5.brand, t3.outcome, t3.incount, t3.income, t3.outcount, t4.check_amount, t4.check_status  FROM (SELECT* FROM"+
+    		CURRENT_IN_SQL+
+ " LEFT JOIN "+
+ CURRENT_OUT_SQL+
+" ON t1.wid = t2.wid1) as t3"+
+
+" LEFT JOIN"+
+
+"(SELECT ware, check_amount, check_status FROM (SELECT * FROM ware_check ORDER BY updated_on DESC) as t41 GROUP BY ware) as t4"+
+
+ " ON t3.wid = t4.ware"+
+
+" JOIN wares as t5"+
+
+" where t5.id = t3.wid"+
+
+" ORDER BY t3.income - t3.outcome DESC"
+;
     // 实时库存量总数计算
     final String CURRENT_COUNT = "SELECT COUNT(DISTINCT(ware)) FROM cost_stock_in";
 
+   //SELECT ware, check_amount, status as check_status FROM ware_check GROUP BY ware ORDER BY updated_on DESC  
 
     @SuppressWarnings("unchecked")
     @Override
@@ -54,6 +70,13 @@ public class InventoryServiceBean extends BaseDAOSupport implements InventorySer
             inventory.setIncount(objAry[5] == null ? 0L : ((BigDecimal) objAry[5]).longValue());
             inventory.setIncome(objAry[6] == null ? BigDecimal.ZERO : (BigDecimal) objAry[6]);
             inventory.setOutcount(objAry[7] == null ? 0L : ((BigDecimal) objAry[7]).longValue());
+                                
+            if(objAry[9].equals("valid")){
+            	inventory.setCheckcount(objAry[8] == null ? "0" : objAry[8].toString());        
+            }else
+            {
+            	inventory.setCheckcount("最近未盘点");
+            }
             currentInventories.add(inventory);
         }
 

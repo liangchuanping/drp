@@ -49,6 +49,10 @@ public class BaseController extends HandlerInterceptorAdapter {
     @Autowired
     protected CheckInvoiceService checkInvoiceService;
     
+	
+	@Autowired
+	protected CheckWareService checkWareService;
+	
     private static final ThreadLocal<HttpServletRequest> REQUEST = new ThreadLocal<HttpServletRequest>();
 
     private static final ThreadLocal<HttpServletResponse> RESPONSE = new ThreadLocal<HttpServletResponse>();

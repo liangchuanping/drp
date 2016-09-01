@@ -23,9 +23,7 @@ import com.originspark.drp.util.json.JsonUtils;
 @Controller
 @RequestMapping("checkware/in")
 public class CheckWareController extends BaseController{    
-	
-	@Autowired
-	private CheckWareService service;
+
 	
 	@RequestMapping( method = RequestMethod.POST)
 	@ResponseBody
@@ -60,22 +58,22 @@ public class CheckWareController extends BaseController{
       checkWare.setCreatedBy(getCurrentUser().getName());
       checkWare.setUpdatedOn(new Date());
       checkWare.setUpdatedBy(getCurrentUser().getName());
-      service.save(checkWare);
+      checkWareService.save(checkWare);
       return ok("创建成功");
 	}
 	
 	@RequestMapping(value = "/{id}", method =RequestMethod.DELETE)
 	@ResponseBody
 	public String delete(@PathVariable Long id ){
-		CheckWare checkWare = service.findById(CheckWare.class, id);
-		service.delete(checkWare);
+		CheckWare checkWare = checkWareService.findById(CheckWare.class, id);
+		checkWareService.delete(checkWare);
 		return ok("删除成功");
 		}
 	
 	@RequestMapping(value = "/{id}" , method = RequestMethod.PUT)
 	@ResponseBody
 	public String updata(@PathVariable Long id, @RequestBody CheckWare checkWare){
-		CheckWare existingCheckWare = service.findById(CheckWare.class, id);
+		CheckWare existingCheckWare = checkWareService.findById(CheckWare.class, id);
 		 if (existingCheckWare == null) {
 	            return failure("您要更新的记录不存在");
 	        }
@@ -93,8 +91,8 @@ public String list(@RequestParam int start, @RequestParam int limit, @RequestPar
 		filters.addAll(JsonUtils.getListFromJsonArray(filter));
 	}
 	
-	List<CheckWare> data = service.pagedDataSet(start, limit, filters);
-	Long count = service.pageDataCount(filters);
+	List<CheckWare> data = checkWareService.pagedDataSet(start, limit, filters);
+	Long count = checkWareService.pageDataCount(filters);
 	
 	return ok(data, count);	
 }

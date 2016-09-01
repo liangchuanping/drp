@@ -51,13 +51,14 @@ Ext.define('drp.app.view.projects.check.CheckWareShowView', {
                         }]
                     }]
                 }]
-            }, {//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<入库单-商品列表
+            }, 
+            {//<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<入库单-商品列表
                 xtype : 'gridpanel',
                 region : 'center',
                 height : 260,
                 autoScroll : true,
                 columnLines : true,
-                store : "drp.app.store.projects.check.checkWareStore",
+                store : "drp.app.store.projects.check.CheckWareStore",
                 columns : [
                     Ext.create('Ext.grid.RowNumberer'),
                 {
@@ -86,7 +87,8 @@ Ext.define('drp.app.view.projects.check.CheckWareShowView', {
                     flex : 2,
                     text : '比重'
                 }]
-            }],
+            }
+            ],
             dockedItems : [{//<<<<<<<<<<<<<<<<<<<<<<<<入库单-汇总人员信息
                 xtype: 'toolbar',
                 dock: 'bottom',

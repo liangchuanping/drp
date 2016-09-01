@@ -11,4 +11,5 @@ public interface CheckWareService  extends BaseDAO<CheckWare>{
    List<CheckWare> pagedDataSet(int start, int limit, List<FilterRequest> filters);
    Long pageDataCount(List<FilterRequest> filters);
    Map<String, String> validate();
+   CheckWare getMostRecentCheckWare(String wareId);
 }

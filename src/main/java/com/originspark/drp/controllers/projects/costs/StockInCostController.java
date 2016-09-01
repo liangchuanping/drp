@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.originspark.drp.controllers.BaseController;
+import com.originspark.drp.models.projects.check.CheckWare;
 import com.originspark.drp.models.projects.costs.StockInCost;
 import com.originspark.drp.models.projects.invoices.StockInInvoice;
 import com.originspark.drp.service.projects.costs.StockInCostService;
@@ -35,7 +36,9 @@ public class StockInCostController extends BaseController{
         if(invoiceUI == null){
             return failure("所选入库单不能为空");
         }
-
+        CheckWare check= checkWareService.getMostRecentCheckWare(stockInCost.getWare().getId().toString());
+        check.setCheckStatus("invalid");
+        checkWareService.update(check);
         StockInInvoice invoice = stockInInvoiceService.findById(invoiceUI.getId());
         if(invoice == null){
             return failure("你所选择的入库单不存在，请重新选择");

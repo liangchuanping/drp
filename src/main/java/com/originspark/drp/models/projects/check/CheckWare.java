@@ -28,6 +28,7 @@ public class CheckWare extends AbstractModel{
     
 	private String wareAmount;
 	
+	private String checkStatus;
 	@Column(precision = 15, scale = 2, nullable = false)
 	private BigDecimal checkAmount = BigDecimal.ZERO;
 	
@@ -35,6 +36,14 @@ public class CheckWare extends AbstractModel{
 	
 	private String weight;
 	
+	
+	public String getCheckStatus(){
+		return this.checkStatus;
+	}
+	
+	public void setCheckStatus(String checkStatus){
+		this.checkStatus = checkStatus;
+	}
 	
 	public String getDifference(){
 		return this.difference;

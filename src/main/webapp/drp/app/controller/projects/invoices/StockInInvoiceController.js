@@ -12,7 +12,8 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
     inInvoiceCostWin : null,//inInvoiceCostWin默认是未创建的
     inInvoiceDetailWin : null,
     wareInWin : null,
-
+    
+    
     init : function() {
         inInvoiceController = this;
         this.control({
@@ -423,7 +424,8 @@ Ext.define("drp.app.controller.projects.invoices.StockInInvoiceController", {
               "drp.app.store.resources.VendorStore",
               "drp.app.store.users.ManagerStore",
               "drp.app.store.users.WareKeeperStore",
-              "drp.app.store.users.RegulatorStore"],
+              "drp.app.store.users.RegulatorStore",
+              "drp.app.store.projects.inventories.CurrentInventoryStore"],
     views : ["drp.app.view.projects.invoices.StockInInvoiceView", 
              "drp.app.view.projects.costs.StockInCostView",
              "drp.app.view.projects.costs.StockInCostShowView",

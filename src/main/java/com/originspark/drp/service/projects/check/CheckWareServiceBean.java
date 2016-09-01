@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -89,5 +91,11 @@ public class CheckWareServiceBean  extends BaseDAOSupport<CheckWare> implements 
 		
 	}
 
-
+	public CheckWare getMostRecentCheckWare(String wareId){
+		String recentMostCheckWare_SQL = "Select checkWare FROM CheckWare checkWare where checkWare.ware = "+ wareId +"ORDER BY checkWare.updatedOn DESC";
+		TypedQuery<CheckWare> checkWare = em.createQuery(recentMostCheckWare_SQL, CheckWare.class);
+		List<CheckWare> result = checkWare.getResultList();
+		return result.get(0);		
+	}
+   
 }

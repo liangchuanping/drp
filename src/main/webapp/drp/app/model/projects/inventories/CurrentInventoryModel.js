@@ -23,6 +23,10 @@ Ext.define("drp.app.model.projects.inventories.CurrentInventoryModel", {
     }, {
         name : "income"
     }, {
+    	name : "checkcount",
+    },{
+    	name : "checkStatus",
+    },{
         name : "outcome"
     }, {
         name : "profit"

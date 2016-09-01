@@ -255,6 +255,7 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     		   inInvoiceDetailWin = Ext.widget('checkwareshowview');    		   
     	   }
     	   checkWin = inInvoiceDetailWin;
+    	   
     	   inInvoiceDetailWin.setTitle("查看盘点单");
     	   
     	   var store = checkWin.down("gridpanel").getStore();
@@ -268,7 +269,7 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     	   checkWin.down("#managerName_df").setValue(record.data.manager);
     	   checkWin.down("#wareKeeperName_df").setValue(record.data.wareKeeper);
     	   checkWin.down("#regulatorName_df").setValue(record.data.regulator);
-    	   
+    	   checkWin.show();
        },
               
        saveCheckStock : function(btn){
@@ -285,7 +286,8 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     		   id : formBean["wareId"] }); 
     		   
                model.set("invoice",{
-               id : currentCheckInvoice.data.id });                
+               id : currentCheckInvoice.data.id });               
+               model.set("checkStatus", "valid");
     	   }
     	   
     	   model.set("difference",formBean["checkAmount"] - formBean["wareAmount"]); 
@@ -312,6 +314,7 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
              "drp.app.view.projects.check.CheckFormView",
              "drp.app.view.resources.StockInWareWin",
              "drp.app.view.resources.WareView",
+             "drp.app.view.projects.check.CheckWareShowView"
              ],
              
     models : ['drp.app.model.projects.inventories.CurrentInventoryModel',
