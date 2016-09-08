@@ -17,6 +17,7 @@ import com.originspark.drp.controllers.BaseController;
 import com.originspark.drp.models.projects.check.CheckInvoice;
 import com.originspark.drp.models.projects.check.CheckWare;
 import com.originspark.drp.service.projects.check.CheckWareService;
+import com.originspark.drp.util.enums.CheckStatus;
 import com.originspark.drp.util.json.FilterRequest;
 import com.originspark.drp.util.json.JsonUtils;
 
@@ -58,6 +59,7 @@ public class CheckWareController extends BaseController{
       checkWare.setCreatedBy(getCurrentUser().getName());
       checkWare.setUpdatedOn(new Date());
       checkWare.setUpdatedBy(getCurrentUser().getName());
+      checkWare.setCheckStatus(CheckStatus.valid);
       checkWareService.save(checkWare);
       return ok("创建成功");
 	}

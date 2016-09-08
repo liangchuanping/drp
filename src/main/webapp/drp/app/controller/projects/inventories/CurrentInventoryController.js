@@ -287,7 +287,6 @@ Ext.define('drp.app.controller.projects.inventories.CurrentInventoryController',
     		   
                model.set("invoice",{
                id : currentCheckInvoice.data.id });               
-               model.set("checkStatus", "valid");
     	   }
     	   
     	   model.set("difference",formBean["checkAmount"] - formBean["wareAmount"]); 

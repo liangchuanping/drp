@@ -3,6 +3,8 @@ package com.originspark.drp.models.projects.check;
 import java.math.BigDecimal;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.ManyToOne;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
@@ -15,6 +17,7 @@ import java.util.Date;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.originspark.drp.models.AbstractModel;
 import com.originspark.drp.models.resources.Ware;
+import com.originspark.drp.util.enums.CheckStatus;
 
 @Entity
 @Table(name = "ware_check")
@@ -28,7 +31,9 @@ public class CheckWare extends AbstractModel{
     
 	private String wareAmount;
 	
-	private String checkStatus;
+    @Enumerated(EnumType.STRING)
+	private CheckStatus checkStatus;
+    
 	@Column(precision = 15, scale = 2, nullable = false)
 	private BigDecimal checkAmount = BigDecimal.ZERO;
 	
@@ -37,11 +42,11 @@ public class CheckWare extends AbstractModel{
 	private String weight;
 	
 	
-	public String getCheckStatus(){
+	public CheckStatus getCheckStatus(){
 		return this.checkStatus;
 	}
 	
-	public void setCheckStatus(String checkStatus){
+	public void setCheckStatus(CheckStatus checkStatus){
 		this.checkStatus = checkStatus;
 	}
 	

@@ -20,6 +20,7 @@ import com.originspark.drp.models.projects.invoices.StockInInvoice;
 import com.originspark.drp.service.projects.costs.StockInCostService;
 import com.originspark.drp.util.json.FilterRequest;
 import com.originspark.drp.util.json.JsonUtils;
+import com.originspark.drp.util.enums.CheckStatus;
 
 @Controller
 @RequestMapping("stockInCost")
@@ -37,7 +38,7 @@ public class StockInCostController extends BaseController{
             return failure("所选入库单不能为空");
         }
         CheckWare check= checkWareService.getMostRecentCheckWare(stockInCost.getWare().getId().toString());
-        check.setCheckStatus("invalid");
+        check.setCheckStatus(CheckStatus.invalid);
         checkWareService.update(check);
         StockInInvoice invoice = stockInInvoiceService.findById(invoiceUI.getId());
         if(invoice == null){

@@ -15,7 +15,8 @@ Ext.define("drp.app.model.projects.check.CheckWareModel", {
     },{
     	name:  'weight'
     },{
-        name : "checkStatus"
+        name : "checkStatus",
+        persist : false
     },{
         name : "ware.name",
         persist : false
